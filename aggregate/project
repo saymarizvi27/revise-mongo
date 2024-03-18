@@ -1,0 +1,78 @@
+//$project
+
+//*
+
+1. If a field is described with a value of 1 or true, the document that is to be
+returned will have that field.
+2. You can suppress the _id field so that it cannot be returned by describing it
+with 0 or false value.
+3. You can add a new field or reset the field by describing it with a value of some
+expression.
+4. The $project operation will basically treat a numeric or boolean values as
+flags. For this reason, you will need to use the $literal operator for you to set
+a field value numeric or boolean.
+
+*//
+
+db.getCollection('user').aggregate(
+    [
+      {
+        $unwind: {
+            $path: "$connections",
+            includeArrayIndex: "arrayIndex"
+        }
+      },
+      {
+        $project: {
+            connection.username: 1, 
+            _id: 0
+        }
+      }
+    ]
+);
+
+db.getCollection('user').aggregate([
+    {
+        $unwind: {
+            $path: "$connections",
+            includeArrayIndex: "arrayIndex"
+        }
+    },{
+        $project: {
+            connection.username: 1,
+            _id: 0,
+            “ConnectionStatus”: "$connection.status"
+        }
+    }
+])
+
+//Adding a New Field or Resetting a Field:
+
+{
+    $project: {
+        fullname: {
+            $concat: [
+                "$firstName" , " ", "$lastName"
+            ]
+        }
+    }
+}
+
+/*
+Why Use $literal for Numeric or Boolean Values:
+In MongoDB's aggregation pipeline, if you specify a numeric or boolean value directly within the $project stage, it's treated as a flag. This means that if the value is 1, it indicates inclusion of the field, and if the value is 0, it indicates exclusion of the field.
+
+However, if you want to set a specific numeric or boolean value for a field without it being interpreted as a flag, you need to use the $literal operator
+
+*/
+
+db.student.aggregate([
+    {
+        $project: {
+            name: 1 , 
+            isGraduate : {
+                $literal: true
+            }
+        }
+    }
+])
