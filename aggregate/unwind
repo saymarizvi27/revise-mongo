@@ -53,3 +53,24 @@ db.vehicle.aggregate([
         }
     }
 ])
+
+//When you perform the $unwind operation on an embedded array, 
+//it will function the same way as on a normal array field. 
+//The $unwind operation will deconstruct the items in each of the embedded arrays.
+
+//Unwind nested Array
+
+{$unwind: "$items"},{$unwind: "$items.type"}
+
+db.vehicle.aggregate([
+    {
+        $unwind: "$items"
+    },
+    {
+        $unwind: "$items.type"
+    },{
+        $project: {
+            _id: 0
+        }
+    }
+])
