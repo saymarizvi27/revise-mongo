@@ -1,0 +1,55 @@
+
+
+//Unwind 
+
+//$unwind operator to deconstruct the “model_year” array field and to create separate documents for each year.
+
+db.vehical.aggregate([
+    {
+        $unwind: "$model_year"
+    }
+]);
+
+//if a non-array field is defined as the path in the $unwind operator, 
+//it would have resulted in an error. From MongoDB 3.2 onwards, 
+//any non-array field which does not resolve to a missing, null, or empty array will be treated as a single element array.
+
+//https://www.bmc.com/blogs/mongodb-unwind/
+
+//Give the index of arrays
+db.vehical.aggregate([
+    {
+        $unwind:"$model_year",
+        includeArrayIndex: "vehicleIndex"
+    }
+]);
+
+//preserveNullAndEmptyArrays option
+
+db.vehical.aggregate([
+    {
+        $unwind: "$model_year",
+        preserveNullAndEmptyArrays: true
+    }
+])
+
+//Combining unwind with AggregatE
+
+db.vehicle.aggregate([
+    {
+        $unwind: "$colors",
+        preserveNullAndEmptyArrays: true
+    },
+    { 
+        $group:{
+          _id : "$color",
+          averagePrice: {
+            $avg: "$price"
+          }  
+        }
+    },{
+        sort: {
+            "averagePrice" : -1
+        }
+    }
+])

@@ -1,0 +1,8 @@
+//To find the first 5 records . 
+
+User.find({}).limit(5);
+
+//Skip 2 recods and give the next 10 records 
+
+User.find({}).skip(2).limit(5);
+

@@ -1,0 +1,60 @@
+//Logical Query Operators
+
+//$and 
+
+Student.find({
+    $and: 
+        [ {"avgMarks": 80} , {'stream': "Commerce"}],
+});
+
+//$nor
+
+//The $nor operator is used to specify that none of the conditions inside the array should be satisfied.
+
+Student.find({
+    $nor: [{"age" : 15} , {"class": 2}]
+})
+
+//$OR operator 
+
+Student.find({
+    $or: [{age: {$gte :15}},{"class": 3}]
+})
+
+//Not oPERATOR 
+
+Student.find({
+    $not: {
+        name: 'Rectangle'
+    }
+});
+
+//Can combine with Comparision Operator 
+
+Student.find({
+    "age": {
+       $not: {$gte: 50}
+    }
+});
+
+//With the aggregate 
+
+Student.aggregate([
+    {
+        $match: {
+            $not: 'Rectangle'
+        }
+    }
+]);
+
+//Alternate aggregate query 
+
+Student.aggregate([
+    {
+        $match: {
+            'marks.science' : {
+               $lte: 30
+            }
+        }
+    }
+])

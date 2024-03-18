@@ -1,0 +1,84 @@
+//$Add Operator 
+
+//we are going to find the total salary of every employee in the development department. 
+
+Employee.aggregate([{
+    $match: {
+        'department': 'development'
+    }
+}, {
+    $project: {
+        name: 1,
+        department: 1,
+        tsalary: {
+            $add: ["$firstSalary", "$secondSalary"]
+        }
+    }
+}])
+
+Employee.find({
+    'deparment': 'development'
+}, {
+    name: 1,
+    deparment: 1,
+    tsalary: {
+        $add: [firstSalary, seondarySalary]
+    }
+})
+
+//$Subract 
+
+//In this example, we are going to subtract the value of firstSalary field from the value of secondSalary field using $subtract operator.
+
+Employee.aggregate([{
+    $match: {
+        'depatment': 'development'
+    }
+}, {
+    $project: {
+        name: 1,
+        result: {
+            $subtract: ['$firstSalary', 'secondSalary']
+        }
+    }
+}]);
+
+//$Multiply similar to above 
+
+//$divide Operator similar to above 
+//$abs used to find the Absolute 
+
+Employee.aggregate([{
+    $match: {
+        'department': 'testing'
+    }
+}, {
+    $project: {
+        name: 1,
+        totalSalary: {
+            $abs: {
+                $sum: ["$firstSalary", "$secondSalary", "$thirdSalary"]
+            }
+        }
+    }
+}]);
+
+
+//$floor This operator is used to find the largest integer less than or equal to the specified number.
+
+//$ceil This operator is used to find the smallest integer greater than or equal to the specified number.  
+
+/* $mod MongoDB provides different types of arithmetic expression operators that are used in the aggregation pipeline stages
+ and $mod operator is one of them. This operator is used to divide one number by another number
+  and return the remainder. */
+  
+/*MongoDB provides different types of arithmetic expression operators that are used in the aggregation pipeline stages
+ $sqrt operator is one of them. 
+ This operator is used to find the square root of a positive number and returns the result as a double.  */
+
+ /* $pow */
+
+/* Gives the expontial $exp */
+/* Log value { $log: [ <number>, <base> ] } */
+/* Log 10 value { $log10: <number> } */
+/* { $ln: <number> } This operator is used to find the natural logarithm of a number and returns the result as a double. */

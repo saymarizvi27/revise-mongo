@@ -1,0 +1,59 @@
+
+
+//To give the count 
+db.collection.aggregate([
+    {
+        $group:{
+            _id: "$status",
+            count: {
+                $sum: 1
+            }
+        }
+    }
+]);
+
+db.collection.aggregate([
+    {$group: {
+        _id: "$eyeColor"
+    }}
+]);
+
+db.collection.aggregate([
+    {
+        $group: {
+            _id: "$eyeColor",
+            numberOfPeople: {
+                $sum: 1
+            }
+        }
+    }
+]);
+
+db.collection.aggregate([
+    {
+        $group:{
+            _id: "$eyeColor",
+            name: {
+                $push: "$name"
+            }
+        }
+    }
+]);
+
+//Grouping by Multiple Fields and Calculating Average
+
+db.order.aggregate([
+    {
+        $group: {
+            _id: {
+                status: "$status",
+                customer_id: "$customer_id"
+            },
+            averageOrderTotal: {
+                $avg: "$total"
+            }
+        }
+    }
+]);
+
+//You can use various accumulation operators like $sum, $avg, $min, $max, etc., within $group to perform calculations. For instance, if you want to calculate the total sales amount for each month:
