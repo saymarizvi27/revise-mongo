@@ -27,4 +27,26 @@ db.user.aggregate([
             'age': -1
         }
     }
-])
+]);
+
+//Can combine two fields 
+
+db.user.aggregate([
+    {
+        $sort: {
+            "age": -1 , 
+            "name": 1
+        }
+    }
+]);
+
+//Can do nested fields 
+
+db.user.aggregate([
+    {
+        $sort: {
+            "address.city": 1 , 
+            "address.street": 1
+        }
+    }
+]);
