@@ -1,0 +1,23 @@
+db.order.aggregate([
+    {
+        $project: {
+            "customer_id": 1,
+            "numberOfOrder": {
+                $size: "$items"
+            }
+        }
+    },{
+        $match: {
+           "numberOfOrder": {
+            "$gt": 3
+           }
+        }
+    },{
+        $group:{
+            _id: "customer_id",
+            "totalOrders": {
+                "$sum": 1
+            }
+        }
+    }
+]);

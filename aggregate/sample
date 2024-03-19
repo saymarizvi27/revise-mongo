@@ -1,0 +1,16 @@
+/* This stage randomly selects and returns a number of documents that have been
+specified. For example from the students collection, fetch 2 random documents as */
+
+db.user.aggregate([
+    {
+        $project: {
+            'age':1,
+            'name': 1,
+            '_id': 0
+        }
+    },{
+        $select: {
+            "size": 2
+        } 
+    }
+]);
